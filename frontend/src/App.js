@@ -6,7 +6,7 @@ import Graph from "./Graph";
 function App() {
   return (
     <Router>
-      <div>
+      <div className="h-full">
         <Routes>
           <Route path='/' element={<Home/>} />
           <Route path='/graph' element={<Graph/>} />

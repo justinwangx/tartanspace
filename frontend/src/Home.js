@@ -4,10 +4,9 @@ import PointCloud from "./PointCloud";
 
 function Home() {
   return (
-    <div>
-      <h1>Test</h1>
-      <Link to="/graph">Go to Second Page</Link>
-      <PointCloud/>
+    <div className="h-full relative">
+      <PointCloud className="w-full h-full"/>
+      <Link className="font-bold absolute bottom-0 left-0 text-white" to="/graph">Go to Second Page</Link>
     </div>
   );
 }

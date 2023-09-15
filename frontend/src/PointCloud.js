@@ -30,21 +30,19 @@ function PointCloud() {
     // Add more points with positions and colors as needed
   ];
   for (var i = 0; i < 100; i++) {
-    points.push({position: [Math.random()*100, Math.random()*100, Math.random()*100], color: 
+    points.push({position: [Math.random()*5, Math.random()*5, Math.random()*5], color: 
     'white'})
   }
 
   return (
     <Canvas
       camera={{ position: [0, 0, 5] }}
-      style={{ background: 'black', height: '600px'}}
+      style={{ background: 'black', height: '100%', width: '100%'}}
       onCreated={({ gl, camera }) => {
         const controls = new OrbitControls(camera, gl.domElement);
         controls.minDistance = 1;
         controls.maxDistance = 10;
       }}
-      width="800px"
-      height="600px"
     >
       {points.map((point, index) => (
         <Point key={index} position={point.position} color={point.color} />
