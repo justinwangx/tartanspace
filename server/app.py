@@ -5,7 +5,8 @@ from embed_and_reduce import get_embedding, reduce_dimensions
 from db import save_document, get_all_submissions
 
 app = Flask(__name__)
-CORS(app)
+# TODO: don't allow requests from any domain! (specify the specific ones)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/')
 def hello_world():
