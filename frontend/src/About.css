@@ -1,0 +1,16 @@
+.about-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100vh;
+  background-color: #4a235a; /* Purple dark hue background color */
+}
+
+.blocky-text {
+  background-color: rgba(0, 0, 0, 0.7); /* Dark semi-transparent background */
+  color: white; /* White text color */
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 70%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional: Add a shadow effect */
+}

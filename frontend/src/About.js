@@ -1,11 +1,12 @@
 import React from "react";
+import "./About.css"; // Import a separate CSS file for styling
 
 const About = () => {
   return (
-    <div>
-      <div>
+    <div className="about-container">
+      <div className="blocky-text">
         tartanspace is a tool designed to connect students at Carnegie Mellon.
-        Each member of tartanspace completes a form containing pesonal questions
+        Each member of tartanspace completes a form containing personal questions
         that reveal information about themselves. Text responses from the form
         are then embedded into high-dimensional space using transformer-based
         language models. These embeddings are then mapped to 3-dimensional space
