@@ -94,7 +94,8 @@ const Graph = () => {
       labelRenderer.render(scene, camera);
 
       spheres.forEach((sphere, i) => {
-        labels[i].position.copy(sphere.position).add(new THREE.Vector3(4, 4, 4));
+        const scale = camera.position.distanceTo(sphere.position) / 300;
+        labels[i].position.copy(sphere.position).add(new THREE.Vector3(4*scale, 4*scale, 4*scale));
       })
 
       TWEEN.update();
@@ -103,7 +104,7 @@ const Graph = () => {
     // Star/label data
     const spheres = [];
     const labels = [];
-    const sphereGeometry = new THREE.IcosahedronGeometry(0.5, 1);
+    const sphereGeometry = new THREE.IcosahedronGeometry(0.35, 1);
     const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
 
     let pointDict;
@@ -138,7 +139,7 @@ const Graph = () => {
     });
 
     // Background points
-    const backgroundGeometry = new THREE.SphereGeometry(0.3, 1);
+    const backgroundGeometry = new THREE.SphereGeometry(0.2, 1);
     for (let i = 0; i < 1000; i++) {
       const material = new THREE.MeshBasicMaterial({ color: "white" });
       const sphere = new THREE.Mesh(backgroundGeometry, material);
