@@ -139,8 +139,8 @@ const Graph = () => {
     });
 
     // Background points
-    const backgroundGeometry = new THREE.SphereGeometry(0.2, 1);
-    for (let i = 0; i < 1000; i++) {
+    const backgroundGeometry = new THREE.SphereGeometry(0.3, 1);
+    for (let i = 0; i < 500; i++) {
       const material = new THREE.MeshBasicMaterial({ color: "white" });
       const sphere = new THREE.Mesh(backgroundGeometry, material);
       const x = Math.random() - 0.5;
@@ -152,7 +152,7 @@ const Graph = () => {
       sphere.position.set(x*dist, y*dist, z*dist);
       scene.add(sphere);
     };
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 500; i++) {
       const material = new THREE.MeshBasicMaterial({ color: "#fd00ff" });
       const sphere = new THREE.Mesh(backgroundGeometry, material);
       const x = Math.random() - 0.5;
