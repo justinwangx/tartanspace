@@ -66,20 +66,20 @@ function FormPage() {
   return (
     <div className="flex justify-center items-center h-screen font-mooli">
       <div className="w-1/3 mt-20">
-        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mb-4">
+        <h1 className="block uppercase text-center tracking-wide text-orange-500 text-3xl font-mooli font-bold mb-4">
           join tartanspace
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 ">
               <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-white text-xs font-mooli mb-2"
                 for="grid-first-name"
               >
                 First Name
               </label>
               <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="appearance-none block w-full bg-gray-700 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 id="firstName"
                 name="firstName"
@@ -93,13 +93,13 @@ function FormPage() {
 
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                class="block uppercase tracking-wide text-white text-xs font-mooli mb-2"
                 for="grid-last-name"
               >
                 Last Name
               </label>
               <input
-                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="appearance-none block w-full bg-gray-700 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="lastName"
                 name="lastName"
                 value={formData.lastName}
@@ -113,13 +113,13 @@ function FormPage() {
 
           <div class="w-full mb-6 md:mb">
             <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              className="block uppercase tracking-wide text-white text-xs font-mooli mb-2"
               htmlFor="email"
             >
               Email
             </label>
             <input
-              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              class="appearance-none block w-full bg-gray-700 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               type="email"
               id="email"
               name="email"
@@ -132,19 +132,19 @@ function FormPage() {
             />
           </div>
 
-          <p className="text-center">
+          <p className="text-center text-white font-mooli text-base">
             answer at least one of the questions below - more is better
           </p>
           {questions.map((question, index) => (
             <div>
               <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                class="block uppercase tracking-wide text-white text-xs font-mooli mb-2"
                 htmlFor={`question${index}`}
               >
                 {question}
               </label>
               <input
-                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="block w-full bg-gray-700 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 type="text"
                 id={`question${index}`}
                 name={`question${index}`}
@@ -156,13 +156,13 @@ function FormPage() {
 
           <div className="flex items-center justify-between">
             <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold"
+              className="block uppercase tracking-wide text-white text-xs font-mooli"
               htmlFor="single"
             >
               r u single?
             </label>
             <div className="flex items-center space-x-4">
-              <label className="flex items-center">
+              <label className="flex items-center text-white font-mooli">
                 <input
                   type="radio"
                   name="single"
@@ -178,7 +178,7 @@ function FormPage() {
                 />
                 <span className="ml-2">Yes</span>
               </label>
-              <label className="flex items-center">
+              <label className="flex items-center text-white font-mooli">
                 <input
                   type="radio"
                   name="single"
@@ -199,13 +199,13 @@ function FormPage() {
 
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white p-2 rounded"
+            className="w-full bg-orange-800 text-white p-2 rounded"
           >
             Submit
           </button>
         </form>
-        <Link to="/" className="text-center block mt-4 mb-4">
-          Go back to tartanspace
+        <Link to="/" className="text-center block mt-4 mb-4 text-white">
+          Go back to TartanSpace
         </Link>
       </div>
     </div>

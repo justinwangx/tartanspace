@@ -18,9 +18,11 @@ body > #root > div {
 }
 
 body {
-  background-image: linear-gradient(to bottom right, orange, purple);
+  background-image: linear-gradient(to bottom right, #46247A, #2B002B);
+  background-size: cover;
+  background-attachment: fixed;
   margin: 0;
-  height: 100%;
+  height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

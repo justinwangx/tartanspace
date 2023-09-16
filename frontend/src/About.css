@@ -37,6 +37,10 @@
   #grad1{
     background-color: white;
     background-image: linear-gradient(to bottom right, orange, purple);
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    height: 100vh;
   }
   
   .modal {
