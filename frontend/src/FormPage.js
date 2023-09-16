@@ -61,10 +61,9 @@ function FormPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen overflow-y-auto font-mooli">
-      <div className="w-1/3">
-        {/* <h1 className="text-center text-3xl mt-20 mb-4">Join tartanspace</h1> */}
-        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mt-10 mb-4">
+    <div className="flex justify-center items-center h-screen font-mooli">
+      <div className="w-1/3 mt-20">
+        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mb-4">
           join tartanspace
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -107,6 +106,27 @@ function FormPage() {
                 required
               ></input>
             </div>
+          </div>
+
+          <div class="w-full mb-6 md:mb">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              pattern="[a-zA-Z0-9._%+-]+@cmu\.edu"
+              placeholder="email@{andrew.}cmu.edu"
+              title="Please enter an email ending with 'cmu.edu'"
+              required
+            />
           </div>
 
           <p className="text-center">
