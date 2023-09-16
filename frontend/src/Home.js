@@ -6,7 +6,7 @@ function Home() {
   return (
     <div className="h-full relative">
       <PointCloud className="w-full h-full"/>
-      <Link className="font-bold absolute bottom-0 left-0 text-white" to="/graph">Go to Second Page</Link>
+      <Link className="font-bold absolute bottom-0 left-0 text-white" to="/form">Enter tartanspace</Link>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Home";
-import Graph from "./Graph";
+import FormPage from "./FormPage";
 
 function App() {
   return (
@@ -9,7 +9,7 @@ function App() {
       <div className="h-full">
         <Routes>
           <Route path='/' element={<Home/>} />
-          <Route path='/graph' element={<Graph/>} />
+          <Route path='/form' element={<FormPage/>} />
         </Routes>
       </div>
     </Router>
