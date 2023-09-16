@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -15,6 +16,9 @@ const About = () => {
         members will be emailed the names and contact information of their 3
         closest neighbors in 3D space.
       </div>
+      <Link className="font-bold absolute bottom-10 left-0 text-black" to="/">
+        Back to tartanspace
+      </Link>
     </div>
   );
 };
