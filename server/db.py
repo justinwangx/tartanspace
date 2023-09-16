@@ -15,3 +15,7 @@ def save_document(user_data: dict):
     insert_result = collection.insert_one(user_data)
     if insert_result.acknowledged:
         print(f"Successfully inserted with id: {insert_result.inserted_id}")
+
+def get_all_submissions():
+    cursor = collection.find({}, {"_id": 0, "first_name": 1, "last_name": 1, "embedding": 1})
+    return list(cursor)
