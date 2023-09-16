@@ -17,14 +17,13 @@ const Graph = () => {
     div.style.color = "white";
     div.style.position = "absolute";
     div.style.fontSize = "24px";
-    div.style.textShadow = "0 0 10px #FFFFFF, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000";
+    div.style.textShadow = "0 0 10px #FFFFFF";
 
     const name = document.createElement("p")
     name.textContent = text;
     div.appendChild(name);
 
     let label = new CSS2DObject(div);
-    label.frustumCulled = false;
     return label;
   }
 
