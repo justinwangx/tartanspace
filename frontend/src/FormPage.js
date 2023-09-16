@@ -61,9 +61,9 @@ function FormPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen overflow-y-auto font-mooli">
-      <div className="w-1/3">
-        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mt-10 mb-4">
+    <div className="flex justify-center items-center h-screen font-mooli">
+      <div className="w-1/3 mt-20">
+        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mb-4">
           join tartanspace
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
