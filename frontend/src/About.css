@@ -14,3 +14,40 @@
   max-width: 70%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Optional: Add a shadow effect */
 }
+
+.container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+  .modal {
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.5);  
+  }
+  .warning {
+    display: none;
+  }
+}
+
+#grad1{
+  background-color: white;
+  background-image: linear-gradient(to bottom right, orange, purple);
+}
+
+.modal {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 200px;
+  color: #333;
+  font-family: sans-serif;
+  line-height: 1.5;
+  max-width: 70%;
+  padding: 2rem 7rem;
+  a {
+    color: #bf0222;
+  }
+}
