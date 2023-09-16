@@ -159,7 +159,9 @@ const Graph = () => {
     return () => {
       window.removeEventListener('resize', setCanvasSize);
       window.removeEventListener('mousemove', onMouseMove);
-      canvasRef.current.removeChild(canvas);
+      if (canvasRef != null && canvasRef.current != null) {
+        canvasRef.current.removeChild(canvas);
+      }
     };
 
   }, []);
