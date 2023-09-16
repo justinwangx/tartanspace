@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { FlyControls } from 'three/addons/controls/FlyControls.js';
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
@@ -49,6 +50,8 @@ const Graph = () => {
     const controls = new OrbitControls(camera, labelRenderer.domElement);
     camera.position.z = 500;
     camera.zoom = 5;
+    controls.minZoom = 5.0;
+    controls.maxZoom = 20.0;
     controls.update();
 
     // Initialize bloom renderer and canvas
@@ -91,7 +94,7 @@ const Graph = () => {
       labelRenderer.render(scene, camera);
 
       spheres.forEach((sphere, i) => {
-        labels[i].position.copy(sphere.position).add(new THREE.Vector3(2, 2, 2));
+        labels[i].position.copy(sphere.position).add(new THREE.Vector3(4, 4, 4));
       })
 
       TWEEN.update();
@@ -100,7 +103,7 @@ const Graph = () => {
     // Star/label data
     const spheres = [];
     const labels = [];
-    const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
+    const sphereGeometry = new THREE.IcosahedronGeometry(0.5, 1);
     const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
 
     let pointDict;
@@ -117,9 +120,9 @@ const Graph = () => {
       for (let key in pointDict) {
         const material = new THREE.MeshBasicMaterial({ color: baseColor });
         const sphere = new THREE.Mesh(sphereGeometry, material);
-        const x = pointDict[key][0] * 80 - 40;
-        const z = pointDict[key][1] * 80 - 40;
-        const y = pointDict[key][2] * 80 - 40;
+        const x = pointDict[key][0] * 150 - 75;
+        const z = pointDict[key][1] * 150 - 75;
+        const y = pointDict[key][2] * 150 - 75;
         sphere.position.set(x, y, z);
         let label = createLabel(key);
         label.visible = true;
@@ -134,9 +137,36 @@ const Graph = () => {
       console.error('Error:', error);
     });
 
+    // Background points
+    const backgroundGeometry = new THREE.SphereGeometry(0.3, 1);
+    for (let i = 0; i < 1000; i++) {
+      const material = new THREE.MeshBasicMaterial({ color: "white" });
+      const sphere = new THREE.Mesh(backgroundGeometry, material);
+      const x = Math.random() - 0.5;
+      const y = Math.random() - 0.5;
+      const z = Math.random() - 0.5;
+      let dist = Math.random() * 4000;
+      if (0 < dist && dist < 2000) dist = 2000;
+      if (0 > dist && dist > -2000) dist = -2000;
+      sphere.position.set(x*dist, y*dist, z*dist);
+      scene.add(sphere);
+    };
+    for (let i = 0; i < 1000; i++) {
+      const material = new THREE.MeshBasicMaterial({ color: "#fd00ff" });
+      const sphere = new THREE.Mesh(backgroundGeometry, material);
+      const x = Math.random() - 0.5;
+      const y = Math.random() - 0.5;
+      const z = Math.random() - 0.5;
+      let dist = Math.random() * 4000;
+      if (0 < dist && dist < 2000) dist = 2000;
+      if (0 > dist && dist > -2000) dist = -2000;
+      sphere.position.set(x*dist, y*dist, z*dist);
+      scene.add(sphere);
+    };
+
     let lastIntersected;
-    const animationEasing = TWEEN.Easing.Quadratic.InOut;
-    const hoverAnimationLength = 50;
+    const animationEasing = TWEEN.Easing.Back.InOut;
+    const hoverAnimationLength = 30;
     function startHoverAnimation(sphere) {
       lastIntersected = sphere;
       new TWEEN.Tween(sphere.material.color)
@@ -144,7 +174,7 @@ const Graph = () => {
         .easing(animationEasing) 
         .start();
       new TWEEN.Tween(sphere.scale)
-        .to({ x: 2, y: 2, z: 2 }, hoverAnimationLength)
+        .to({ x: 1.6, y: 1.6, z: 1.6 }, hoverAnimationLength)
         .easing(animationEasing) 
         .start();
     }
