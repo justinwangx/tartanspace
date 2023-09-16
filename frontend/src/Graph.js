@@ -16,7 +16,7 @@ const Graph = () => {
     div.style.backgroundColor = "argb(0, 0, 0, 0)";
     div.style.color = "white";
     div.style.position = "absolute";
-    div.style.fontSize = "24px";
+    div.style.fontSize = "16px";
     div.style.textShadow = "0 0 10px #FFFFFF";
 
     const name = document.createElement("p")
@@ -108,6 +108,7 @@ const Graph = () => {
     .then(response => response.json())
     .then(data => {
       // Process the response data
+      console.log(data);
       pointDict = data;
       console.log("38", data);
       console.log(pointDict);
