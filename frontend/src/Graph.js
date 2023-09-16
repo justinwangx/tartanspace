@@ -48,6 +48,7 @@ const Graph = () => {
     // Initialize camera, scene, and controls
     const controls = new OrbitControls(camera, labelRenderer.domElement);
     camera.position.z = 500;
+    camera.zoom = 5;
     controls.update();
 
     // Initialize bloom renderer and canvas
