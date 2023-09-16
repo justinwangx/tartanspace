@@ -51,12 +51,15 @@ function FormPage() {
         lastName: "",
         email: "",
         single: false,
+        question0: "",
         question1: "",
         question2: "",
         question3: "",
         question4: "",
         question5: "",
       });
+    } else {
+      console.log("Form submission failed");
     }
   };
 
