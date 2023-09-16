@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from embed_and_reduce import get_embedding, reduce_dimensions
-from db import save_document
+from db import save_document, get_all_submissions
 
 app = Flask(__name__)
 CORS(app)
@@ -41,13 +41,24 @@ def process_submission():
 
 @app.route('/get-points', methods=['GET'])
 def get_points():
-    return None
+    submissions = get_all_submissions()
+    embeddings = []
+    names_to_points = {}
+
+    for data_dict in submissions:
+        embeddings.append(data_dict["embedding"])
+    points = reduce_dimensions(embeddings)
+
+    for i, data_dict in enumerate(submissions):
+        names_to_points[f"{data_dict['first_name']} {data_dict['last_name']}"] = list(points[i])
+    
+    return jsonify(names_to_points)
 
 @app.route('/test-endpoint', methods=['GET'])
 def your_endpoint():
     try:
         # Send a JSON response back
-        return jsonify({"message": "Data fetched successfully. LETSGOOOO"}), 200
+        return jsonify({"message": "Data fetched successfully."}), 200
     except Exception as e:
         print("An error occurred:", e)
         return jsonify({"message": "An error occurred"}), 400
