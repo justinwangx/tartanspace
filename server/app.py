@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from embed_and_reduce import get_embedding, reduce_dimensions
+from db import save_document
 
 app = Flask(__name__)
 CORS(app)
@@ -20,10 +21,21 @@ def process_submission():
     answer3 = request.json.get("question3")
     answer4 = request.json.get("question4")
     answer5 = request.json.get("question5")
+    single = request.json.get("single")
+
     answers = [answer1, answer2, answer3, answer4, answer5]
 
-    # embed text
     embedding = get_embedding(answers)
+
+    data_dict = {
+        "first_name": first_name,
+        "last_name": last_name,
+        "email": email,
+        "embedding": embedding.tolist(),
+        "single": single,
+    }
+
+    save_document(data_dict)
 
     return jsonify(name="success")
 

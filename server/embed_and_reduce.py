@@ -14,9 +14,8 @@ def get_embedding(sentences: list):
     mean_embedding = np.mean(embeddings, axis=0)
     return mean_embedding
 
-def reduce_dimensions(embeddings):
-    output_dimension = 3
-    pca = PCA(n_components=output_dimension)
+def reduce_dimensions(embeddings, dim=3):
+    pca = PCA(n_components=dim)
     reduced_embedding = pca.fit_transform(embeddings)
     return reduced_embedding
 

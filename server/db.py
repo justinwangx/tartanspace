@@ -6,11 +6,12 @@ load_dotenv()
 db_username = os.getenv("MONGODB_USERNAME")
 db_password = os.getenv("MONGODB_PASSWORD")
 
-# Replace the placeholder data with your Atlas connection string
 client = MongoClient(f"mongodb+srv://{db_username}:{db_password}@cluster0.iwabec8.mongodb.net/?retryWrites=true&w=majority")
 
-# Perform a basic operation to check connectivity
 db = client.get_database('hackcmu')
 collection = db['dev']
-count = collection.count_documents({})
-print(f"The collection has {count} documents.")
+
+def save_document(user_data: dict):
+    insert_result = collection.insert_one(user_data)
+    if insert_result.acknowledged:
+        print(f"Successfully inserted with id: {insert_result.inserted_id}")

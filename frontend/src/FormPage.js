@@ -24,7 +24,7 @@ function FormPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const response = await fetch("http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission", {
       method: "POST",
       headers: {
@@ -74,7 +74,7 @@ function FormPage() {
           ))}
           <div className="flex flex-col">
             <label htmlFor="single">Single:</label>
-            <input type="checkbox" id="single" name="single" checked={formData.single === 'yes'} onChange={() => setFormData({ ...formData, single: formData.single === 'yes' ? 'no' : 'yes' })} required />
+            <input type="checkbox" id="single" name="single" checked={formData.single === 'yes'} onChange={() => setFormData({ ...formData, single: formData.single === 'yes' ? 'no' : 'yes' })} />
           </div>
           <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">Submit</button>
         </form>
