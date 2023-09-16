@@ -1,13 +1,23 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { ShaderMaterial } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
 
 const Graph = () => {
   const canvasRef = useRef(null);
+
+  function createLabel(text) {
+    let div = document.createElement('div');
+    div.className = 'label';
+    div.textContent = text;
+    div.style.marginTop = '-1em';
+    let label = new CSS2DObject(div);
+    label.visible = false; // Initially set to invisible
+    return label;
+  }
 
   useEffect(() => {
     // load points
@@ -24,20 +34,25 @@ const Graph = () => {
 
     //global declaration
     let scene = new THREE.Scene();
-    let camera;
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     let renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
-    let canvas;
     scene = new THREE.Scene();
 
+    let labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.style.position = 'absolute';
+    labelRenderer.domElement.style.top = '0px';
+    document.body.appendChild(labelRenderer.domElement);
+
     // Initialize camera, scene, and controls
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const controls = new OrbitControls(camera, renderer.domElement);
     camera.position.z = 100;
-    new OrbitControls(camera, renderer.domElement);
+    controls.update();
 
     // Initialize bloom renderer and canvas
-    canvas = renderer.domElement;
+    const canvas = renderer.domElement;
     canvasRef.current.appendChild(canvas);
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
@@ -71,17 +86,23 @@ const Graph = () => {
 
     // Generate stars
     const spheres = [];
-    const sphereGeometries = [];
-    const baseColor = new THREE.Color("#ff7800");
-    const hoverColor = new THREE.Color("#ffffff");
+    const sphereGeometry = new THREE.IcosahedronGeometry(1, 15);
+    const glowSphereGeometry = new THREE.IcosahedronGeometry(2, 15);
+    const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
     for (let i = 0; i < 100; i++) {
-      sphereGeometries[i] = new THREE.IcosahedronGeometry(1, 15);
       const material = new THREE.MeshBasicMaterial({ color: baseColor });
-      const sphere = new THREE.Mesh(sphereGeometries[i], material)
+      const glowMaterial = new THREE.MeshBasicMaterial({ color: hoverColor });
+      const sphere = new THREE.Mesh(sphereGeometry, material);
+      const glowSphere = new THREE.Mesh(glowSphereGeometry, glowMaterial);
       const x = Math.random() * 250 - 125;
       const y = Math.random() * 250 - 125;
       const z = Math.random() * 250 - 125;
       sphere.position.set(x, y, z);
+      glowSphere.position.set(x, y, z);      
+      glowSphere.visible = false;
+      let label = createLabel('Sphere ' + String(i));
+      sphere.add(label);
+      sphere.add(glowSphere);
       spheres.push(sphere);
       scene.add(sphere);
     }
@@ -89,6 +110,8 @@ const Graph = () => {
     // Animate function
     const animate = () => {
       bloomComposer.render();
+      labelRenderer.render(scene, camera);
+      controls.update();
       requestAnimationFrame(animate);
     };
 
@@ -104,15 +127,18 @@ const Graph = () => {
       // Check for intersected objects
       const intersects = raycaster.intersectObjects(spheres);
 
-      // Reset all spheres to original color
-      spheres.forEach(sphere => {
-        sphere.material.color.set(baseColor);
-      });
+      // // Reset all spheres to original color
+      // spheres.forEach(sphere => {
+      //   sphere.children[0].visible = false;
+      //   sphere.children[1].visible = false;
+      // });
 
-      // Change color of intersected object
-      if (intersects.length > 0) {
-        intersects[0].object.material.color.set(hoverColor);
-      }
+      // // Change color of intersected object
+      // if (intersects.length > 0) {
+      //   intersects[0].object.children[0].visible = true;
+      //   intersects[0].object.children[1].visible = true;
+      // }
+
     };
 
     // Add event listeners
