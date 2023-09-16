@@ -64,14 +64,14 @@ function FormPage() {
     <div className="flex justify-center items-center h-screen overflow-y-auto">
       <div className="w-1/3">
         {/* <h1 className="text-center text-3xl mt-20 mb-4">Join tartanspace</h1> */}
-        <h1 class="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mt-10 mb-4">
+        <h1 className="block uppercase text-center tracking-wide text-gray-700 text-3xl font-bold mt-10 mb-4">
           Join TartanSpace
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
-                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
                 for="grid-first-name"
               >
                 First Name
