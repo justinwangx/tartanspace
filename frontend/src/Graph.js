@@ -17,6 +17,7 @@ const Graph = () => {
     div.style.color = "white";
     div.style.position = "absolute";
     div.style.fontSize = "24px";
+    div.style.textShadow = "0 0 10px #FFFFFF, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000";
 
     const name = document.createElement("p")
     name.textContent = text;
@@ -47,7 +48,7 @@ const Graph = () => {
 
     // Initialize camera, scene, and controls
     const controls = new OrbitControls(camera, labelRenderer.domElement);
-    camera.position.z = 100;
+    camera.position.z = 500;
     controls.update();
 
     // Initialize bloom renderer and canvas
@@ -90,7 +91,7 @@ const Graph = () => {
       labelRenderer.render(scene, camera);
 
       spheres.forEach((sphere, i) => {
-        labels[i].position.copy(sphere.position);
+        labels[i].position.copy(sphere.position).add(new THREE.Vector3(2, 2, 2));
       })
 
       TWEEN.update();
@@ -115,9 +116,9 @@ const Graph = () => {
       for (let key in pointDict) {
         const material = new THREE.MeshBasicMaterial({ color: baseColor });
         const sphere = new THREE.Mesh(sphereGeometry, material);
-        const x = pointDict[key][0] * 250 - 125;
-        const z = pointDict[key][1] * 250 - 125;
-        const y = pointDict[key][2] * 250 - 125;
+        const x = pointDict[key][0] * 80 - 40;
+        const z = pointDict[key][1] * 80 - 40;
+        const y = pointDict[key][2] * 80 - 40;
         sphere.position.set(x, y, z);
         let label = createLabel(key);
         label.visible = true;
