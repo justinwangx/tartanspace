@@ -5,6 +5,7 @@ import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import * as TWEEN from '@tweenjs/tween.js';
 
 const Graph = () => {
   const canvasRef = useRef(null);
@@ -12,8 +13,8 @@ const Graph = () => {
   function createLabel(text) {
     const div = document.createElement("div");
     
-    div.style.backgroundColor = "white";
-    div.style.color = "black";
+    div.style.backgroundColor = "argb(0, 0, 0, 0)";
+    div.style.color = "white";
     div.style.position = "absolute";
 
     const name = document.createElement("p")
@@ -95,22 +96,16 @@ const Graph = () => {
     // Generate stars
     const spheres = [];
     const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
-    const glowSphereGeometry = new THREE.IcosahedronGeometry(2, 1);
     const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
     for (let i = 0; i < 100; i++) {
       const material = new THREE.MeshBasicMaterial({ color: baseColor });
-      const glowMaterial = new THREE.MeshBasicMaterial({ color: hoverColor });
       const sphere = new THREE.Mesh(sphereGeometry, material);
-      // const glowSphere = new THREE.Mesh(glowSphereGeometry, glowMaterial);
       const x = Math.random() * 250 - 125;
       const y = Math.random() * 250 - 125;
       const z = Math.random() * 250 - 125;
       sphere.position.set(x, y, z);
-      // glowSphere.position.set(num_max, num_max, num_max);
-      // glowSphere.visible = false;
       let label = createLabel('Sphere ' + String(i));
       sphere.add(label);
-      // sphere.add(glowSphere);
       spheres.push(sphere);
       scene.add(sphere);
     }
@@ -121,8 +116,13 @@ const Graph = () => {
       controls.update();
       bloomComposer.render();
       labelRenderer.render(scene, camera);
+
+      TWEEN.update();
     };
 
+    let lastIntersected;
+    const animationEasing = TWEEN.Easing.Bounce.InOut;
+    const hoverAnimationLength = 50;
     // Mouse move event handler
     const onMouseMove = (e) => {
       // Update mouse vector
@@ -137,23 +137,42 @@ const Graph = () => {
 
       // Reset all spheres to original color
       spheres.forEach(sphere => {
-        sphere.children[0].visible = false;
-        // sphere.children[1].visible = false;
-        sphere.children[0].position.set(num_max, num_max, num_max);
-        // sphere.children[1].position.set(num_max, num_max, num_max);
+        if (sphere !== lastIntersected) {
+          sphere.children[0].visible = false;
+          sphere.children[0].position.set(num_max, num_max, num_max);
+        }
       });
 
       // Change color of intersected object, make glow sphere visible
       if (intersects.length > 0) {
         // This is 0 if we intersect with a glow sphere
         if (intersects[0].object.children.length > 0) {
-          console.log("intersecting with ", intersects[0].object);
-          intersects[0].object.children[0].visible = true;
-          intersects[0].object.children[0].position.set(0, 0, 0);
-          // intersects[0].object.children[1].visible = true;
-          // intersects[0].object.children[1].position.set(0, 0, 0);
-        }
+          if (!lastIntersected) {
+            lastIntersected = intersects[0].object;
+            intersects[0].object.children[0].visible = true;
+            intersects[0].object.children[0].position.set(2, 2, 0);
+            new TWEEN.Tween(intersects[0].object.material.color)
+              .to(hoverColor, hoverAnimationLength)
+              .easing(animationEasing) 
+              .start();
+            new TWEEN.Tween(intersects[0].object.scale)
+              .to({ x: 2, y: 2, z: 2 }, hoverAnimationLength)
+              .easing(animationEasing) 
+              .start();
+          } 
+        } 
+      } else if (lastIntersected) {
+        new TWEEN.Tween(lastIntersected.material.color)
+          .to(baseColor, hoverAnimationLength) // Change back to baseColor
+          .easing(animationEasing) 
+          .start();
+        new TWEEN.Tween(lastIntersected.scale)
+          .to({ x: 1, y: 1, z: 1 }, hoverAnimationLength) // Reset size
+          .easing(animationEasing) 
+          .start();
+        lastIntersected = null; 
       }
+      TWEEN.update();
 
     };
 
