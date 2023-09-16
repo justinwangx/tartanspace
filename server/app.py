@@ -37,7 +37,7 @@ def process_submission():
 
     save_document(data_dict)
 
-    return jsonify(name="success")
+    return jsonify(status="Success", message="Submission processed and saved")
 
 @app.route('/get-points', methods=['GET'])
 def get_points():
