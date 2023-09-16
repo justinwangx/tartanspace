@@ -18,6 +18,16 @@ def reduceDimensions(embeddings):
     output_dimension = 3
     pca = PCA(n_components=output_dimension)
     reduced_embedding = pca.fit_transform(embeddings)
+    return reduced_embedding
+    
+if __name__ == "__main__":
+    originalEmbedding = returnEmbedding(['I love Mathematics.',
+                                         'I love Mathematics.',
+                                         'I drink my sorrows away.',
+                                         'Drugs are cool.'])
+    x = numpy.random.rand(100, 384)  # 100 samples, 384 dimensions
+    reducedEmbedding = reduceDimensions(originalEmbedding)
+
     print(reduced_embedding)
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
@@ -27,10 +37,3 @@ def reduceDimensions(embeddings):
     ax.set_zlabel('Principal Component 3')
     plt.title('PCA Reduced Data (3D)')
     plt.show()
-
-originalEmbedding = returnEmbedding(['I love Mathematics.',
-                                     'I love Mathematics.',
-                                     'I drink my sorrows away.',
-                                     'Drugs are cool.'])
-x = numpy.random.rand(100, 384)  # 100 samples, 384 dimensions
-reducedEmbedding = reduceDimensions(originalEmbedding)
