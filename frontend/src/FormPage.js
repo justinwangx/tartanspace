@@ -57,8 +57,6 @@ const questions = [
     }
   };
 
-
-
   return (
     <div className="flex justify-center items-center overflow-y-auto">
       <div className="w-1/3">
