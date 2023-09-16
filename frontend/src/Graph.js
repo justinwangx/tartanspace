@@ -10,10 +10,11 @@ const Graph = () => {
   const canvasRef = useRef(null);
 
   function createLabel(text) {
-    let div = document.createElement('div');
-    div.className = 'label';
-    div.textContent = text;
-    div.style.marginTop = '-1em';
+    const div = document.createElement("div");
+    div.style.backgroundColor = "white";
+    div.style.color = "black";
+    div.style.position = "absolute";
+    
     let label = new CSS2DObject(div);
     label.visible = false; // Initially set to invisible
     return label;
@@ -95,16 +96,16 @@ const Graph = () => {
       const material = new THREE.MeshBasicMaterial({ color: baseColor });
       const glowMaterial = new THREE.MeshBasicMaterial({ color: hoverColor });
       const sphere = new THREE.Mesh(sphereGeometry, material);
-      const glowSphere = new THREE.Mesh(glowSphereGeometry, glowMaterial);
+      // const glowSphere = new THREE.Mesh(glowSphereGeometry, glowMaterial);
       const x = Math.random() * 250 - 125;
       const y = Math.random() * 250 - 125;
       const z = Math.random() * 250 - 125;
       sphere.position.set(x, y, z);
-      glowSphere.position.set(num_max, num_max, num_max);
-      glowSphere.visible = false;
+      // glowSphere.position.set(num_max, num_max, num_max);
+      // glowSphere.visible = false;
       let label = createLabel('Sphere ' + String(i));
       sphere.add(label);
-      sphere.add(glowSphere);
+      // sphere.add(glowSphere);
       spheres.push(sphere);
       scene.add(sphere);
     }
@@ -132,17 +133,20 @@ const Graph = () => {
       // Reset all spheres to original color
       spheres.forEach(sphere => {
         sphere.children[0].visible = false;
-        sphere.children[1].visible = false;
-        sphere.children[1].position.set(num_max, num_max, num_max);
+        // sphere.children[1].visible = false;
+        sphere.children[0].position.set(num_max, num_max, num_max);
+        // sphere.children[1].position.set(num_max, num_max, num_max);
       });
 
       // Change color of intersected object, make glow sphere visible
       if (intersects.length > 0) {
         // This is 0 if we intersect with a glow sphere
         if (intersects[0].object.children.length > 0) {
+          console.log("intersecting with ", intersects[0].object);
           intersects[0].object.children[0].visible = true;
-          intersects[0].object.children[1].visible = true;
-          intersects[0].object.children[1].position.set(0, 0, 0);
+          intersects[0].object.children[0].position.set(0, 0, 0);
+          // intersects[0].object.children[1].visible = true;
+          // intersects[0].object.children[1].position.set(0, 0, 0);
         }
       }
 
