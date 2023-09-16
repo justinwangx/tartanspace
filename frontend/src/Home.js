@@ -5,8 +5,19 @@ import Graph from "./Graph";
 function Home() {
   return (
     <div className="h-full relative">
-      <Graph className="w-full h-full"/>
-      <Link className="font-bold absolute bottom-0 left-0 text-white" to="/form">Enter tartanspace</Link>
+      <Graph className="w-full h-full z-0" />
+      <Link
+        className="font-bold text-xl font-mooli fixed bottom-0 left-0 text-white z-50"
+        to="/form"
+      >
+        Enter tartanspace
+      </Link>
+      <Link
+        className="font-bold text-xl font-mooli fixed bottom-10 left-0 text-white z-50"
+        to="/about"
+      >
+        About
+      </Link>
     </div>
   );
 }

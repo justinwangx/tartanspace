@@ -17,30 +17,6 @@ body > #root > div {
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 body {
   margin: 0;
   height: 100%;
@@ -54,16 +30,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
-
-.label {
-  background-color: white;
-  border: 1px solid black;
-  padding: 0.1em 0.3em;
-  font-size: 1.2em;
-  font-family: sans-serif;
-  text-align: center;
-  opacity: 0.8;
 }
 
 @tailwind base;

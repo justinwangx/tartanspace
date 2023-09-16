@@ -5,32 +5,29 @@ import { EffectComposer } from "/node_modules/three/examples/jsm/postprocessing/
 import { RenderPass } from "/node_modules/three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "/node_modules/three/examples/jsm/postprocessing/UnrealBloomPass.js";
 import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import * as TWEEN from '@tweenjs/tween.js';
 
 const Graph = () => {
   const canvasRef = useRef(null);
 
   function createLabel(text) {
-    let div = document.createElement('div');
-    div.className = 'label';
-    div.textContent = text;
-    div.style.marginTop = '-1em';
+    const div = document.createElement("div");
+    
+    div.style.backgroundColor = "argb(0, 0, 0, 0)";
+    div.style.color = "white";
+    div.style.position = "absolute";
+    div.style.fontSize = "24px";
+    div.style.textShadow = "0 0 10px #FFFFFF";
+
+    const name = document.createElement("p")
+    name.textContent = text;
+    div.appendChild(name);
+
     let label = new CSS2DObject(div);
-    label.visible = false; // Initially set to invisible
     return label;
   }
 
   useEffect(() => {
-    // load points
-    fetch('http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points')
-    .then(response => response.json())
-    .then(data => {
-    // Process the response data
-    console.log(data);
-    })
-    .catch(error => {
-    // Handle any errors
-    console.error('Error:', error);
-  });
 
     //global declaration
     let scene = new THREE.Scene();
@@ -38,21 +35,22 @@ const Graph = () => {
     let renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
+    const canvas = renderer.domElement;
     scene = new THREE.Scene();
 
-    let labelRenderer = new CSS2DRenderer();
+    let labelRenderer = new CSS2DRenderer(canvas);
     labelRenderer.setSize(window.innerWidth, window.innerHeight);
     labelRenderer.domElement.style.position = 'absolute';
     labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.zIndex = '41';
     document.body.appendChild(labelRenderer.domElement);
 
     // Initialize camera, scene, and controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    camera.position.z = 100;
+    const controls = new OrbitControls(camera, labelRenderer.domElement);
+    camera.position.z = 500;
     controls.update();
 
     // Initialize bloom renderer and canvas
-    const canvas = renderer.domElement;
     canvasRef.current.appendChild(canvas);
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
@@ -84,37 +82,81 @@ const Graph = () => {
     // Initial setting
     setCanvasSize();
 
-    // Generate stars
-    const spheres = [];
-    const sphereGeometry = new THREE.IcosahedronGeometry(1, 15);
-    const glowSphereGeometry = new THREE.IcosahedronGeometry(2, 15);
-    const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
-    for (let i = 0; i < 100; i++) {
-      const material = new THREE.MeshBasicMaterial({ color: baseColor });
-      const glowMaterial = new THREE.MeshBasicMaterial({ color: hoverColor });
-      const sphere = new THREE.Mesh(sphereGeometry, material);
-      const glowSphere = new THREE.Mesh(glowSphereGeometry, glowMaterial);
-      const x = Math.random() * 250 - 125;
-      const y = Math.random() * 250 - 125;
-      const z = Math.random() * 250 - 125;
-      sphere.position.set(x, y, z);
-      glowSphere.position.set(x, y, z);      
-      glowSphere.visible = false;
-      let label = createLabel('Sphere ' + String(i));
-      sphere.add(label);
-      sphere.add(glowSphere);
-      spheres.push(sphere);
-      scene.add(sphere);
-    }
-
     // Animate function
     const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
       bloomComposer.render();
       labelRenderer.render(scene, camera);
-      controls.update();
-      requestAnimationFrame(animate);
+
+      spheres.forEach((sphere, i) => {
+        labels[i].position.copy(sphere.position).add(new THREE.Vector3(2, 2, 2));
+      })
+
+      TWEEN.update();
     };
 
+    // Star/label data
+    const spheres = [];
+    const labels = [];
+    const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
+    const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
+
+    let pointDict;
+    // load points
+    fetch('http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points')
+    .then(response => response.json())
+    .then(data => {
+      // Process the response data
+      pointDict = data;
+      console.log("38", data);
+      console.log(pointDict);
+      // Render the points
+      for (let key in pointDict) {
+        const material = new THREE.MeshBasicMaterial({ color: baseColor });
+        const sphere = new THREE.Mesh(sphereGeometry, material);
+        const x = pointDict[key][0] * 80 - 40;
+        const z = pointDict[key][1] * 80 - 40;
+        const y = pointDict[key][2] * 80 - 40;
+        sphere.position.set(x, y, z);
+        let label = createLabel(key);
+        label.visible = true;
+        labels.push(label);
+        spheres.push(sphere);
+        scene.add(sphere);
+        scene.add(label);
+      };
+      })
+      .catch(error => {
+      // Handle any errors
+      console.error('Error:', error);
+    });
+
+    let lastIntersected;
+    const animationEasing = TWEEN.Easing.Quadratic.InOut;
+    const hoverAnimationLength = 50;
+    function startHoverAnimation(sphere) {
+      lastIntersected = sphere;
+      new TWEEN.Tween(sphere.material.color)
+        .to(hoverColor, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+      new TWEEN.Tween(sphere.scale)
+        .to({ x: 2, y: 2, z: 2 }, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+    }
+    function startUnHoverAnimation(sphere) {
+      lastIntersected = null;
+      new TWEEN.Tween(sphere.material.color)
+        .to(baseColor, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+      new TWEEN.Tween(sphere.scale)
+        .to({ x: 1, y: 1, z: 1 }, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+    }
     // Mouse move event handler
     const onMouseMove = (e) => {
       // Update mouse vector
@@ -127,17 +169,18 @@ const Graph = () => {
       // Check for intersected objects
       const intersects = raycaster.intersectObjects(spheres);
 
-      // // Reset all spheres to original color
-      // spheres.forEach(sphere => {
-      //   sphere.children[0].visible = false;
-      //   sphere.children[1].visible = false;
-      // });
-
-      // // Change color of intersected object
-      // if (intersects.length > 0) {
-      //   intersects[0].object.children[0].visible = true;
-      //   intersects[0].object.children[1].visible = true;
-      // }
+      // We're intersecting something this frame
+      if (intersects.length > 0) {
+        if (!lastIntersected) { // We weren't intersecting anything in the last frame
+          startHoverAnimation(intersects[0].object);
+        } else if (lastIntersected !== intersects[0].Object) { // We were intersecting something on the last frame, but it was a different object
+          startUnHoverAnimation(lastIntersected);
+          startHoverAnimation(intersects[0].object);
+        }
+      } else if (lastIntersected) { // We were intersecting something on the last frame, but we aren't intersecting anything this frame
+        startUnHoverAnimation(lastIntersected);
+      }
+      TWEEN.update();
 
     };
 
@@ -152,12 +195,15 @@ const Graph = () => {
     return () => {
       window.removeEventListener('resize', setCanvasSize);
       window.removeEventListener('mousemove', onMouseMove);
-      canvasRef.current.removeChild(canvas);
+      if (canvasRef != null && canvasRef.current != null) {
+        canvasRef.current.removeChild(canvas);
+      }
+      document.body.removeChild(labelRenderer.domElement);
     };
 
   }, []);
 
-  return <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0 }}></div>;
+  return <div ref={canvasRef} style={{ position: 'absolute', top: 0, left: 0, zIndex: 40}}></div>;
 };
 
 export default Graph;
