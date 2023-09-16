@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import PointCloud from "./PointCloud";
+import Graph from "./Graph";
 
 function Home() {
   return (
     <div className="h-full relative">
-      <PointCloud className="w-full h-full"/>
-      <Link className="font-bold absolute bottom-0 left-0 text-white" to="/form">Enter tartanspace</Link>
+      <Graph className="w-full h-full z-0"/>
+      <Link className="font-bold absolute bottom-0 left-0 text-white z-50" to="/form">Enter tartanspace</Link>
     </div>
   );
 }
