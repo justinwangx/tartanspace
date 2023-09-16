@@ -16,7 +16,7 @@ const Graph = () => {
     div.style.backgroundColor = "argb(0, 0, 0, 0)";
     div.style.color = "white";
     div.style.position = "absolute";
-    div.style.fontSize = "15px";
+    div.style.fontSize = "24px";
 
     const name = document.createElement("p")
     name.textContent = text;
@@ -28,17 +28,6 @@ const Graph = () => {
   }
 
   useEffect(() => {
-    // load points
-    fetch('http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points')
-    .then(response => response.json())
-    .then(data => {
-    // Process the response data
-    console.log(data);
-    })
-    .catch(error => {
-    // Handle any errors
-    console.error('Error:', error);
-  });
 
     //global declaration
     let scene = new THREE.Scene();
@@ -46,21 +35,22 @@ const Graph = () => {
     let renderer = new THREE.WebGLRenderer({
       antialias: true,
     });
+    const canvas = renderer.domElement;
     scene = new THREE.Scene();
 
-    let labelRenderer = new CSS2DRenderer();
+    let labelRenderer = new CSS2DRenderer(canvas);
     labelRenderer.setSize(window.innerWidth, window.innerHeight);
     labelRenderer.domElement.style.position = 'absolute';
     labelRenderer.domElement.style.top = '0px';
+    labelRenderer.domElement.style.zIndex = '41';
     document.body.appendChild(labelRenderer.domElement);
 
     // Initialize camera, scene, and controls
-    const controls = new OrbitControls(camera, renderer.domElement);
+    const controls = new OrbitControls(camera, labelRenderer.domElement);
     camera.position.z = 100;
     controls.update();
 
     // Initialize bloom renderer and canvas
-    const canvas = renderer.domElement;
     canvasRef.current.appendChild(canvas);
     const renderScene = new RenderPass(scene, camera);
     const bloomPass = new UnrealBloomPass(
@@ -92,29 +82,6 @@ const Graph = () => {
     // Initial setting
     setCanvasSize();
 
-    const num_max = 1.7976931348623157e+308;
-
-    // Generate stars
-    const spheres = [];
-    const labels = [];
-    const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
-    const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
-    for (let i = 0; i < 100; i++) {
-      const material = new THREE.MeshBasicMaterial({ color: baseColor });
-      const sphere = new THREE.Mesh(sphereGeometry, material);
-      const x = Math.random() * 250 - 125;
-      const y = Math.random() * 250 - 125;
-      const z = Math.random() * 250 - 125;
-      sphere.position.set(x, y, z);
-      let label = createLabel('Sphere ' + String(i));
-      sphere.add(label);
-      label.position.set(0, 0, 0);
-      label.visible = true;
-      labels.push(label);
-      spheres.push(sphere);
-      scene.add(sphere);
-    }
-
     // Animate function
     const animate = () => {
       requestAnimationFrame(animate);
@@ -122,21 +89,53 @@ const Graph = () => {
       bloomComposer.render();
       labelRenderer.render(scene, camera);
 
-      // spheres.forEach(sphere => {
-      //   const distance = camera.position.distanceTo(sphere.position);
-      //   console.log(sphere);
-      //   if (sphere)
-      //     sphere.children[0].visible = (distance < 100);
-      // })
+      spheres.forEach((sphere, i) => {
+        labels[i].position.copy(sphere.position);
+      })
 
       TWEEN.update();
     };
+
+    // Star/label data
+    const spheres = [];
+    const labels = [];
+    const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
+    const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
+
+    let pointDict;
+    // load points
+    fetch('http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points')
+    .then(response => response.json())
+    .then(data => {
+      // Process the response data
+      pointDict = data;
+      console.log("38", data);
+      console.log(pointDict);
+      // Render the points
+      for (let key in pointDict) {
+        const material = new THREE.MeshBasicMaterial({ color: baseColor });
+        const sphere = new THREE.Mesh(sphereGeometry, material);
+        const x = pointDict[key][0] * 250 - 125;
+        const z = pointDict[key][1] * 250 - 125;
+        const y = pointDict[key][2] * 250 - 125;
+        sphere.position.set(x, y, z);
+        let label = createLabel(key);
+        label.visible = true;
+        labels.push(label);
+        spheres.push(sphere);
+        scene.add(sphere);
+        scene.add(label);
+      };
+      })
+      .catch(error => {
+      // Handle any errors
+      console.error('Error:', error);
+    });
 
     let lastIntersected;
     const animationEasing = TWEEN.Easing.Quadratic.InOut;
     const hoverAnimationLength = 50;
     function startHoverAnimation(sphere) {
-      console.log("Distance ", camera.position.distanceTo(sphere.position));
       lastIntersected = sphere;
       new TWEEN.Tween(sphere.material.color)
         .to(hoverColor, hoverAnimationLength)
@@ -172,14 +171,12 @@ const Graph = () => {
 
       // We're intersecting something this frame
       if (intersects.length > 0) {
-        if (intersects[0].object.children.length > 0) { 
-          if (!lastIntersected) { // We weren't intersecting anything in the last frame
-            startHoverAnimation(intersects[0].object);
-          } else if (lastIntersected !== intersects[0].Object) { // We were intersecting something on the last frame, but it was a different object
-            startUnHoverAnimation(lastIntersected);
-            startHoverAnimation(intersects[0].object);
-          }
-        } 
+        if (!lastIntersected) { // We weren't intersecting anything in the last frame
+          startHoverAnimation(intersects[0].object);
+        } else if (lastIntersected !== intersects[0].Object) { // We were intersecting something on the last frame, but it was a different object
+          startUnHoverAnimation(lastIntersected);
+          startHoverAnimation(intersects[0].object);
+        }
       } else if (lastIntersected) { // We were intersecting something on the last frame, but we aren't intersecting anything this frame
         startUnHoverAnimation(lastIntersected);
       }
