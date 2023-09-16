@@ -16,13 +16,14 @@ const Graph = () => {
     div.style.backgroundColor = "argb(0, 0, 0, 0)";
     div.style.color = "white";
     div.style.position = "absolute";
+    div.style.fontSize = "15px";
 
     const name = document.createElement("p")
     name.textContent = text;
     div.appendChild(name);
 
     let label = new CSS2DObject(div);
-    label.visible = false; // Initially set to invisible
+    label.frustumCulled = false;
     return label;
   }
 
@@ -95,6 +96,7 @@ const Graph = () => {
 
     // Generate stars
     const spheres = [];
+    const labels = [];
     const sphereGeometry = new THREE.IcosahedronGeometry(1, 1);
     const baseColor = new THREE.Color("#ff7800"), hoverColor = new THREE.Color("#ffffff");
     for (let i = 0; i < 100; i++) {
@@ -106,6 +108,9 @@ const Graph = () => {
       sphere.position.set(x, y, z);
       let label = createLabel('Sphere ' + String(i));
       sphere.add(label);
+      label.position.set(0, 0, 0);
+      label.visible = true;
+      labels.push(label);
       spheres.push(sphere);
       scene.add(sphere);
     }
@@ -117,12 +122,42 @@ const Graph = () => {
       bloomComposer.render();
       labelRenderer.render(scene, camera);
 
+      // spheres.forEach(sphere => {
+      //   const distance = camera.position.distanceTo(sphere.position);
+      //   console.log(sphere);
+      //   if (sphere)
+      //     sphere.children[0].visible = (distance < 100);
+      // })
+
       TWEEN.update();
     };
 
     let lastIntersected;
-    const animationEasing = TWEEN.Easing.Bounce.InOut;
+    const animationEasing = TWEEN.Easing.Quadratic.InOut;
     const hoverAnimationLength = 50;
+    function startHoverAnimation(sphere) {
+      console.log("Distance ", camera.position.distanceTo(sphere.position));
+      lastIntersected = sphere;
+      new TWEEN.Tween(sphere.material.color)
+        .to(hoverColor, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+      new TWEEN.Tween(sphere.scale)
+        .to({ x: 2, y: 2, z: 2 }, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+    }
+    function startUnHoverAnimation(sphere) {
+      lastIntersected = null;
+      new TWEEN.Tween(sphere.material.color)
+        .to(baseColor, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+      new TWEEN.Tween(sphere.scale)
+        .to({ x: 1, y: 1, z: 1 }, hoverAnimationLength)
+        .easing(animationEasing) 
+        .start();
+    }
     // Mouse move event handler
     const onMouseMove = (e) => {
       // Update mouse vector
@@ -135,42 +170,18 @@ const Graph = () => {
       // Check for intersected objects
       const intersects = raycaster.intersectObjects(spheres);
 
-      // Reset all spheres to original color
-      spheres.forEach(sphere => {
-        if (sphere !== lastIntersected) {
-          sphere.children[0].visible = false;
-          sphere.children[0].position.set(num_max, num_max, num_max);
-        }
-      });
-
-      // Change color of intersected object, make glow sphere visible
+      // We're intersecting something this frame
       if (intersects.length > 0) {
-        // This is 0 if we intersect with a glow sphere
-        if (intersects[0].object.children.length > 0) {
-          if (!lastIntersected) {
-            lastIntersected = intersects[0].object;
-            intersects[0].object.children[0].visible = true;
-            intersects[0].object.children[0].position.set(2, 2, 0);
-            new TWEEN.Tween(intersects[0].object.material.color)
-              .to(hoverColor, hoverAnimationLength)
-              .easing(animationEasing) 
-              .start();
-            new TWEEN.Tween(intersects[0].object.scale)
-              .to({ x: 2, y: 2, z: 2 }, hoverAnimationLength)
-              .easing(animationEasing) 
-              .start();
-          } 
+        if (intersects[0].object.children.length > 0) { 
+          if (!lastIntersected) { // We weren't intersecting anything in the last frame
+            startHoverAnimation(intersects[0].object);
+          } else if (lastIntersected !== intersects[0].Object) { // We were intersecting something on the last frame, but it was a different object
+            startUnHoverAnimation(lastIntersected);
+            startHoverAnimation(intersects[0].object);
+          }
         } 
-      } else if (lastIntersected) {
-        new TWEEN.Tween(lastIntersected.material.color)
-          .to(baseColor, hoverAnimationLength) // Change back to baseColor
-          .easing(animationEasing) 
-          .start();
-        new TWEEN.Tween(lastIntersected.scale)
-          .to({ x: 1, y: 1, z: 1 }, hoverAnimationLength) // Reset size
-          .easing(animationEasing) 
-          .start();
-        lastIntersected = null; 
+      } else if (lastIntersected) { // We were intersecting something on the last frame, but we aren't intersecting anything this frame
+        startUnHoverAnimation(lastIntersected);
       }
       TWEEN.update();
 
@@ -190,6 +201,7 @@ const Graph = () => {
       if (canvasRef != null && canvasRef.current != null) {
         canvasRef.current.removeChild(canvas);
       }
+      document.body.removeChild(labelRenderer.domElement);
     };
 
   }, []);
