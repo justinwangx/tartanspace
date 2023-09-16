@@ -11,10 +11,15 @@ const Graph = () => {
 
   function createLabel(text) {
     const div = document.createElement("div");
+    
     div.style.backgroundColor = "white";
     div.style.color = "black";
     div.style.position = "absolute";
-    
+
+    const name = document.createElement("p")
+    name.textContent = text;
+    div.appendChild(name);
+
     let label = new CSS2DObject(div);
     label.visible = false; // Initially set to invisible
     return label;
