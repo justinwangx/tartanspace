@@ -34,7 +34,8 @@ function FormPage() {
     e.preventDefault();
 
     const response = await fetch(
-      "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
+      // "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
+      "http://localhost:8080/form-submission",
       {
         method: "POST",
         headers: {
@@ -64,9 +65,9 @@ function FormPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen font-mooli">
+    <div className="flex justify-center items-center h-screen bg-zinc-500 font-mono">
       <div className="w-1/3 mt-20">
-        <h1 className="block uppercase text-center tracking-wide text-orange-500 text-3xl font-mooli font-bold mb-4">
+        <h1 className="block uppercase text-center tracking-wide text-rose-700 text-3xl font-mono font-bold mb-4">
           join tartanspace
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -99,7 +100,7 @@ function FormPage() {
                 Last Name
               </label>
               <input
-                class="appearance-none block w-full bg-gray-700 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                class="appearance-none block w-full bg-gray-900 text-white border border-gray-200 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="lastName"
                 name="lastName"
                 value={formData.lastName}
@@ -199,7 +200,7 @@ function FormPage() {
 
           <button
             type="submit"
-            className="w-full bg-orange-800 text-white p-2 rounded"
+            className="w-full bg-rose-800 text-white p-2 rounded"
           >
             Submit
           </button>
