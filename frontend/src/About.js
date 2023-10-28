@@ -6,9 +6,8 @@ const About = () => {
     <div className="h-screen w-full">
       <Header />
       <div className="bg-custom h-full w-full -z-10"></div>
-
       <div className="flex flex-col items-center pt-10">
-        <div className="w-1/2 mt-10 text-white">
+        <div className="box-with-opacity w-1/2 mt-10 text-white">
           <p>
             tartanspace is a tool that connects students at Carnegie Mellon
             using vector embeddings.

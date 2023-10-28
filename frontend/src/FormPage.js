@@ -65,7 +65,9 @@ function FormPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-950 font-mono">
+    <div className="h-screen w-full">
+    <div className="bg-custom h-full w-full -z-10"></div>
+    <div className='flex flex-col items-center pt-10'>
       <div className="w-1/3 mt-20">
         <h1 className="block uppercase text-center tracking-wide text-rose-700 text-3xl font-mono font-bold mb-4">
           join tartanspace
@@ -209,6 +211,7 @@ function FormPage() {
           Go back to TartanSpace
         </Link>
       </div>
+    </div>
     </div>
   );
 }

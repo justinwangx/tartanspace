@@ -12,5 +12,17 @@
   background-image: url("/public/bg.png");
   background-size: cover;
   background-position: center;
-  position: absolute;
+  position: fixed;
+  background-attachment: fixed; /* This keeps the background fixed */
+}
+
+.form-custom{
+    position: sticky;
+}
+
+/* Add this CSS to your stylesheet or inline style */
+.box-with-opacity {
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity (0.5) as needed */
+  padding: 20px; /* Adjust the padding as needed to control the size of the box */
+  border-radius: 10px; /* Add rounded corners to the box */
 }
