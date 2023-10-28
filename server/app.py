@@ -58,7 +58,6 @@ def get_points():
 @app.route('/test-endpoint', methods=['GET'])
 def your_endpoint():
     try:
-        # Send a JSON response back
         return jsonify({"message": "Data fetched successfully."}), 200
     except Exception as e:
         print("An error occurred:", e)
