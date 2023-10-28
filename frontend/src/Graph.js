@@ -17,7 +17,8 @@ const Graph = () => {
     const div = document.createElement("div");
 
     div.style.backgroundColor = "argb(0, 0, 0, 0)";
-    div.style.color = "white";
+    div.style.color = "#bfbfbf";
+    div.style.font = "roboto, sans-serif";
     div.style.position = "absolute";
     div.style.fontSize = "16px";
     div.style.textShadow = "0 0 10px #FFFFFF";
@@ -89,6 +90,10 @@ const Graph = () => {
       camera.updateProjectionMatrix();
     };
 
+    // Background parameters
+    const num_stars = 7500;
+    const palette = ["#912e54", "#d1788f", "#dd7c86", "#ffffff"];
+
     // Initial setting
     setCanvasSize();
 
@@ -113,8 +118,8 @@ const Graph = () => {
     const spheres = [];
     const labels = [];
     const sphereGeometry = new THREE.IcosahedronGeometry(0.35, 1);
-    const baseColor = new THREE.Color("#ff7800"),
-      hoverColor = new THREE.Color("#ffffff");
+    const baseColor = new THREE.Color("#ff7800");
+    const hoverColor = new THREE.Color("#ffffff");
 
     let pointDict;
     // load points
@@ -141,26 +146,14 @@ const Graph = () => {
         }
       })
       .catch((error) => {
-        // Handle any errors
         console.error("Error:", error);
       });
 
     // Background points
     const backgroundGeometry = new THREE.SphereGeometry(0.3, 1);
-    for (let i = 0; i < 500; i++) {
-      const material = new THREE.MeshBasicMaterial({ color: "white" });
-      const sphere = new THREE.Mesh(backgroundGeometry, material);
-      const x = Math.random() - 0.5;
-      const y = Math.random() - 0.5;
-      const z = Math.random() - 0.5;
-      let dist = Math.random() * 4000;
-      if (0 < dist && dist < 2000) dist = 2000;
-      if (0 > dist && dist > -2000) dist = -2000;
-      sphere.position.set(x * dist, y * dist, z * dist);
-      scene.add(sphere);
-    }
-    for (let i = 0; i < 500; i++) {
-      const material = new THREE.MeshBasicMaterial({ color: "#fd00ff" });
+    for (let i = 0; i < num_stars; i++) {
+      const idx = Math.floor(Math.random() * palette.length);
+      const material = new THREE.MeshBasicMaterial({ color: palette[idx] });
       const sphere = new THREE.Mesh(backgroundGeometry, material);
       const x = Math.random() - 0.5;
       const y = Math.random() - 0.5;

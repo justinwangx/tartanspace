@@ -65,7 +65,7 @@ function FormPage() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-zinc-500 font-mono">
+    <div className="flex justify-center items-center h-screen bg-gray-950 font-mono">
       <div className="w-1/3 mt-20">
         <h1 className="block uppercase text-center tracking-wide text-rose-700 text-3xl font-mono font-bold mb-4">
           join tartanspace

@@ -7,7 +7,7 @@ import About from "./About";
 function App() {
   return (
     <Router>
-      <div className="h-full">
+      <div className="h-screen w-full">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/form" element={<FormPage />} />
