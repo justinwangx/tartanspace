@@ -2,11 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Countdown from "./Countdown";
 
-const Header = () => {
+const Header = ({ isHome }) => {
   const targetDate = new Date("November 4, 2023 23:59:59");
 
   return (
-    <div>
+    <div className={`${isHome ? "" : "backdrop-blur-sm"}`}>
       <div className="fixed top-5 left-5 flex flex-col z-50">
         <Link className="font-bold text-gray-200 opacity-85" to="/">
           tartanspace

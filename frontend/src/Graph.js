@@ -123,8 +123,7 @@ const Graph = () => {
 
     let pointDict;
     // load points
-    // fetch("http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points")
-    fetch("http://localhost:8080/get-points")
+    fetch("http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/get-points")
       .then((response) => response.json())
       .then((data) => {
         // Process the response data

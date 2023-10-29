@@ -34,8 +34,7 @@ function FormPage() {
     e.preventDefault();
 
     const response = await fetch(
-      // "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
-      "http://localhost:8080/form-submission",
+      "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
       {
         method: "POST",
         headers: {
@@ -66,10 +65,10 @@ function FormPage() {
 
   return (
     <div className="h-screen w-full relative">
-      <Header />
+      <Header isHome={false} />
 
       <div className="flex justify-center items-center pt-10">
-        <div className="w-1/2 mt-10 mb-10 bg-black bg-opacity-50 backdrop-blur-lg p-5 rounded text-gray-200">
+        <div className="w-1/2 mt-10 mb-10 bg-black bg-opacity-75 backdrop-blur-lg p-5 rounded text-gray-200">
           <h1 className="block text-center tracking-wide text-gray-200 text-3xl font-semibold mb-4">
             join <span className="font-bold">tartanspace</span>
           </h1>
@@ -83,7 +82,7 @@ function FormPage() {
                 First Name
               </label>
               <input
-                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white border border-gray-900 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-900 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
                 type="text"
                 id="firstName"
                 name="firstName"
@@ -101,7 +100,7 @@ function FormPage() {
                 Last Name
               </label>
               <input
-                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
                 id="lastName"
                 name="lastName"
                 value={formData.lastName}
@@ -118,7 +117,7 @@ function FormPage() {
                 Email@(andrew).cmu.edu
               </label>
               <input
-                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
                 type="email"
                 id="email"
                 name="email"
@@ -130,8 +129,8 @@ function FormPage() {
               />
             </div>
 
-            <p className="text-center lowercase text-white text-base">
-              answer at least one of the questions below - more is better
+            <p className="text-center lowercase text-gray-100 font-semibold text-base">
+              answer the questions below
             </p>
             {questions.map((question, index) => (
               <div>
@@ -142,7 +141,7 @@ function FormPage() {
                   {question}
                 </label>
                 <textarea
-                  class="block w-full bg-gray-900 bg-opacity-50 text-white border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                  class="block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
                   type="text"
                   rows="2"
                   id={`question${index}`}
