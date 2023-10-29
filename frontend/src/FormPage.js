@@ -1,4 +1,4 @@
-import eact, { useState } from "react";
+import React, { useState } from "react";
 import Header from "./components/Header";
 
 function FormPage() {
@@ -6,6 +6,11 @@ function FormPage() {
     firstName: "",
     lastName: "",
     email: "",
+    contact: "",
+    graduationYear: "",
+    gender: "",
+    orientation: "",
+    profile: "",
     question1: "",
     question2: "",
     question3: "",
@@ -50,7 +55,12 @@ function FormPage() {
         firstName: "",
         lastName: "",
         email: "",
+        contact: "",
+        graduationYear: "",
         single: false,
+        gender: "",
+        orientation: "",
+        profile: "",
         question0: "",
         question1: "",
         question2: "",
@@ -101,6 +111,7 @@ function FormPage() {
               </label>
               <input
                 class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                type="text"
                 id="lastName"
                 name="lastName"
                 value={formData.lastName}
@@ -125,6 +136,42 @@ function FormPage() {
                 onChange={handleChange}
                 pattern="[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)?cmu\.edu"
                 title="Please enter an email ending with 'cmu.edu'"
+                required
+              />
+            </div>
+
+            <div className="w-full mb-6 md:mb-0">
+              <label
+                className="block lowercase tracking-wide text-white text-sm mb-2"
+                htmlFor="graduationYear"
+              >
+                Graduation Year
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                type="texti"
+                id="graduationYear"
+                name="graduationYear"
+                value={formData.graduationYear}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div class="w-full mb-6 md:mb">
+              <label
+                className="block lowercase tracking-wide text-white text-sm mb-2"
+                htmlFor="contact"
+              >
+                contact info (e.g. IG, Discord, etc.)
+              </label>
+              <input
+                class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                type="text"
+                id="contact"
+                name="contact"
+                value={formData.contact}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -157,7 +204,7 @@ function FormPage() {
                 className="block lowercase tracking-wide text-white text-sm"
                 htmlFor="single"
               >
-                r u single?
+                are you single?
               </label>
               <div className="flex items-center space-x-4">
                 <label className="flex items-center text-white">
@@ -194,6 +241,64 @@ function FormPage() {
                 </label>
               </div>
             </div>
+
+            {formData.single === "yes" && (
+              <>
+                <p className="lowercase text-gray-100 font-semibold text-base">
+                  fill out the boxes below if you want potential matches to be
+                  generated for you
+                </p>
+                <div class="w-full mb-6 md:mb">
+                  <label
+                    className="block lowercase tracking-wide text-white text-sm mb-2"
+                    htmlFor="gender"
+                  >
+                    gender
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                    type="text"
+                    id="gender"
+                    name="gender"
+                    value={formData.gender}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div class="w-full mb-6 md:mb">
+                  <label
+                    className="block lowercase tracking-wide text-white text-sm mb-2"
+                    htmlFor="orientation"
+                  >
+                    sexual orientation
+                  </label>
+                  <input
+                    class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                    type="text"
+                    id="orientation"
+                    name="orientation"
+                    value={formData.orientation}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div>
+                  <label
+                    class="block lowercase tracking-wide text-white text-sm mb-2"
+                    htmlFor="profile"
+                  >
+                    anything you want potential matches to know about you
+                  </label>
+                  <textarea
+                    class="block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
+                    type="text"
+                    rows="2"
+                    id="profile"
+                    name="profile"
+                    value={formData.profile}
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
+            )}
 
             <button
               type="submit"
