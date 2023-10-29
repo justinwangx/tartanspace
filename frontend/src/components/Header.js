@@ -7,14 +7,14 @@ const Header = ({ isHome }) => {
 
   return (
     <div className={`${isHome ? "" : "backdrop-blur-sm"}`}>
-      <div className="fixed top-5 left-5 flex flex-col z-50">
+      <div className="fixed top-5 left-7 sm:left-5 flex flex-col z-50">
         <Link className="font-bold text-gray-200 opacity-85" to="/">
           tartanspace
         </Link>
         <Countdown targetDate={targetDate} />
       </div>
 
-      <div className="fixed top-5 right-3 flex-row gap-20 text-gray-200 opacity-100 z-50">
+      <div className="fixed top-5 right-5 sm:right-3 flex-row gap-20 text-gray-200 opacity-100 z-50">
         <Link
           className="font-bold p-2 mx-1 border border-gray-300 bg-transparent"
           to="/about"
