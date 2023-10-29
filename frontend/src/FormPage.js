@@ -34,7 +34,7 @@ function FormPage() {
     e.preventDefault();
 
     const response = await fetch(
-      "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
+      "https://thankyouthankyouthankyou.site/form-submission",
       {
         method: "POST",
         headers: {
