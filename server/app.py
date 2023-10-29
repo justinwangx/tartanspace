@@ -14,8 +14,8 @@ def hello_world():
 
 @app.route('/form-submission', methods=['post'])
 def process_submission():
-    first_name = request.json.get("firstname")
-    last_name = request.json.get("lastname")
+    first_name = request.json.get("firstName")
+    last_name = request.json.get("lastName")
     email = request.json.get("email")
     contact = request.json.get("contact")
     graduation_year = request.json.get("graduationYear")
@@ -77,5 +77,9 @@ def your_endpoint():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
 
-# for now:
+# dev:
 # FLASK_APP=app.py FLASK_ENV=development flask run --host=0.0.0.0 --port=8080
+# prod:
+# gunicorn  -w 4 app:app -b 0.0.0.0:8080
+# sudo supervisorctl start tartanspace_server
+# sudo supervisorctl status tartanspace_server
