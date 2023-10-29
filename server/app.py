@@ -1,12 +1,12 @@
-from flask import flask, request, jsonify
-from flask_cors import cors
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 from embed_and_reduce import get_embedding, reduce_dimensions
 from db import save_document, get_all_submissions
 
-app = flask(__name__)
+app = Flask(__name__)
 allowed_origins = ["https://tartanspace.xyz", "https://www.tartanspace.xyz"]
-cors(app, resources={r"/*": {"origins": allowed_origins}})
+CORS(app, resources={r"/*": {"origins": allowed_origins}})
 
 @app.route('/')
 def hello_world():
