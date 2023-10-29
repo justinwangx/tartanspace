@@ -5,13 +5,13 @@ const About = () => {
   return (
     <div className="h-screen w-full">
       <Header />
-      <div className="bg-custom h-full w-full -z-10"></div>
 
       <div className="flex flex-col items-center pt-10">
-        <div className="w-1/2 mt-10 text-white">
+        <div className="w-1/2 mt-10 bg-black bg-opacity-50 backdrop-blur-sm p-5 rounded text-white">
           <p>
-            tartanspace is a tool that connects students at Carnegie Mellon
-            using vector embeddings.
+            <span className="font-bold text-gray-200">tartanspace</span> is a
+            tool that connects students at Carnegie Mellon using vector
+            embeddings.
           </p>
           <h1 className="font-extrabold text-2xl mt-3 mb-3">FAQ</h1>
           <h3 className="font-bold text-xl">How does this work?</h3>

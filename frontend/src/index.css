@@ -8,9 +8,9 @@
   }
 }
 
-.bg-custom {
+body {
   background-image: url("/public/bg.png");
   background-size: cover;
   background-position: center;
-  position: absolute;
+  background-attachment: fixed;
 }
