@@ -114,7 +114,7 @@ function FormPage() {
                 className="block lowercase tracking-wide text-white text-sm mb-2"
                 htmlFor="email"
               >
-                Email@(andrew).cmu.edu
+                Email@andrew.cmu.edu
               </label>
               <input
                 class="appearance-none block w-full bg-gray-900 bg-opacity-50 text-white text-sm border border-gray-800 rounded py-3 px-2 mb-3 leading-tight focus:outline-none focus:border-gray-200"
@@ -123,7 +123,7 @@ function FormPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                pattern="[a-zA-Z0-9._%+-]+@cmu\.edu"
+                pattern="[a-zA-Z0-9._%+-]+@([a-zA-Z0-9-]+\.)?cmu\.edu"
                 title="Please enter an email ending with 'cmu.edu'"
                 required
               />
