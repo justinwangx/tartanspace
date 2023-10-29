@@ -1,23 +1,28 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import flask, request, jsonify
+from flask_cors import cors
 
 from embed_and_reduce import get_embedding, reduce_dimensions
 from db import save_document, get_all_submissions
 
-app = Flask(__name__)
-# TODO: don't allow requests from any domain! (specify the specific ones)
-CORS(app, resources={r"/*": {"origins": "*"}})
+app = flask(__name__)
+allowed_origins = ["https://tartanspace.xyz", "https://www.tartanspace.xyz"]
+cors(app, resources={r"/*": {"origins": allowed_origins}})
 
 @app.route('/')
 def hello_world():
     return "tartanspace"
 
-@app.route('/form-submission', methods=['POST'])
+@app.route('/form-submission', methods=['post'])
 def process_submission():
-    first_name = request.json.get("firstName")
-    last_name = request.json.get("lastName")
+    first_name = request.json.get("firstname")
+    last_name = request.json.get("lastname")
     email = request.json.get("email")
+    contact = request.json.get("contact")
+    graduation_year = request.json.get("graduationYear")
     single = request.json.get("single")
+    gender = request.json.get("gender")
+    orientation = request.json.get("orientation")
+    profile = request.json.get("profile")
 
     answer1 = request.json.get("question1")
     answer2 = request.json.get("question2")
@@ -33,6 +38,11 @@ def process_submission():
         "first_name": first_name,
         "last_name": last_name,
         "email": email,
+        "contact": contact,
+        "graduation_year": graduation_year,
+        "gender": gender,
+        "orientation": orientation,
+        "profile": profile,
         "embedding": embedding.tolist(),
         "single": single,
     }
