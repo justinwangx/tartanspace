@@ -7,7 +7,7 @@ const About = () => {
       <Header isHome={false} />
 
       <div className="flex flex-col items-center pt-10">
-        <div className="w-1/2 mt-10 bg-black bg-opacity-75 backdrop-blur-sm p-5 rounded text-white">
+        <div className="w-10/12 sm:w-1/2 mt-10 bg-black bg-opacity-75 backdrop-blur-sm p-5 rounded text-white">
           <p>
             <span className="font-bold text-gray-200">tartanspace</span> is a
             tool that connects students at Carnegie Mellon using vector

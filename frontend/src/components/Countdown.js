@@ -24,7 +24,7 @@ const Countdown = ({ targetDate }) => {
   }, [targetDate]);
 
   return (
-    <div className="text-xs text-gray-200 opacity-85">
+    <div className="pt-3 sm:pt-0 text-xs text-gray-200 opacity-85">
       {timeLeft ? (
         <span>
           {`${timeLeft.days} days ${timeLeft.hours} hours ${timeLeft.minutes} minutes ${timeLeft.seconds} seconds remaining`}

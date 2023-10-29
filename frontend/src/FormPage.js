@@ -68,7 +68,7 @@ function FormPage() {
       <Header isHome={false} />
 
       <div className="flex justify-center items-center pt-10">
-        <div className="w-1/2 mt-10 mb-10 bg-black bg-opacity-75 backdrop-blur-lg p-5 rounded text-gray-200">
+        <div className="w-10/12 sm:w-1/2 mt-10 mb-10 bg-black bg-opacity-75 backdrop-blur-lg p-5 rounded text-gray-200">
           <h1 className="block text-center tracking-wide text-gray-200 text-3xl font-semibold mb-4">
             join <span className="font-bold">tartanspace</span>
           </h1>
