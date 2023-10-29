@@ -8,8 +8,8 @@ db_password = os.getenv("MONGODB_PASSWORD")
 
 client = MongoClient(f"mongodb+srv://{db_username}:{db_password}@cluster0.iwabec8.mongodb.net/?retryWrites=true&w=majority")
 
-db = client.get_database('hackcmu')
-collection = db['dev']
+db = client.get_database('tartanspace-v1')
+collection = db['prod']
 
 def save_document(user_data: dict):
     insert_result = collection.insert_one(user_data)
