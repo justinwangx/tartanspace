@@ -33,16 +33,13 @@ function FormPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(
-      "http://ec2-44-196-61-225.compute-1.amazonaws.com:8080/form-submission",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      }
-    );
+    const response = await fetch("http://44.196.61.225:8080/form-submission", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
 
     if (response.ok) {
       // Clear the form if the submission is successful
