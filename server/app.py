@@ -17,12 +17,13 @@ def process_submission():
     first_name = request.json.get("firstName")
     last_name = request.json.get("lastName")
     email = request.json.get("email")
+    single = request.json.get("single")
+
     answer1 = request.json.get("question1")
     answer2 = request.json.get("question2")
     answer3 = request.json.get("question3")
     answer4 = request.json.get("question4")
     answer5 = request.json.get("question5")
-    single = request.json.get("single")
 
     answers = [answer1, answer2, answer3, answer4, answer5]
 
@@ -58,7 +59,6 @@ def get_points():
 @app.route('/test-endpoint', methods=['GET'])
 def your_endpoint():
     try:
-        # Send a JSON response back
         return jsonify({"message": "Data fetched successfully."}), 200
     except Exception as e:
         print("An error occurred:", e)
